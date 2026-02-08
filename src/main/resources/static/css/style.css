@@ -1,0 +1,182 @@
+:root {
+    --primary-color: #4361ee;
+    --secondary-color: #3f37c9;
+    --accent-color: #4895ef;
+    --background-color: #f8f9fa;
+    --text-color: #2b2d42;
+    --card-bg: #ffffff;
+    --seat-available: #e0e0e0;
+    --seat-booked: #ef233c;
+    --seat-selected: #4cc9f0;
+}
+
+body {
+    background-color: var(--background-color);
+    font-family: 'Poppins', sans-serif;
+    color: var(--text-color);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Navbar */
+.navbar {
+    background: rgba(255, 255, 255, 0.95) !important;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-brand {
+    font-weight: 700;
+    color: var(--primary-color) !important;
+    font-size: 1.5rem;
+}
+
+.nav-link {
+    color: var(--text-color) !important;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+    color: var(--primary-color) !important;
+}
+
+/* Cards */
+.card {
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    background: var(--card-bg);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    overflow: hidden;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    font-weight: 600;
+    border-bottom: none;
+    padding: 1.5rem;
+}
+
+/* Buttons */
+.btn-primary {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    border: none;
+    padding: 10px 25px;
+    border-radius: 50px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(67, 97, 238, 0.4);
+}
+
+/* Inputs */
+.form-control {
+    border-radius: 10px;
+    padding: 12px;
+    border: 1px solid #e2e8f0;
+    background-color: #f8fafc;
+}
+
+.form-control:focus {
+    box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.15);
+    border-color: var(--primary-color);
+}
+
+/* Seat Grid */
+.bus-layout {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    max-width: 300px;
+    margin: 0 auto;
+    padding: 20px;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.seat {
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+    background-color: var(--seat-available);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #666;
+    transition: all 0.2s ease;
+    position: relative;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.seat::after {
+    content: '';
+    position: absolute;
+    top: -5px;
+    left: 5px;
+    right: 5px;
+    height: 5px;
+    background: inherit;
+    border-radius: 5px 5px 0 0;
+    opacity: 0.5;
+}
+
+.seat:hover:not(.booked) {
+    transform: scale(1.1);
+    background-color: #d1d5db;
+}
+
+.seat.booked {
+    background-color: var(--seat-booked);
+    color: white;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+.seat.selected {
+    background-color: var(--seat-selected);
+    color: white;
+    transform: scale(1.1);
+    box-shadow: 0 0 15px rgba(76, 201, 240, 0.5);
+}
+
+/* Aisle */
+.aisle-spacer {
+    grid-column: 3;
+}
+
+/* Footer */
+footer {
+    margin-top: auto;
+    background: white;
+    padding: 20px 0;
+    box-shadow: 0 -4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+/* Hero Section */
+.hero-section {
+    background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&q=80&w=1920');
+    background-size: cover;
+    background-position: center;
+    height: 500px;
+    display: flex;
+    align-items: center;
+    color: white;
+    margin-bottom: -50px;
+    padding-bottom: 50px;
+    border-radius: 0 0 30px 30px;
+}

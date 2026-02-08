@@ -1,0 +1,27 @@
+services:
+  - type: web
+    name: bus-reservation-system
+    env: docker
+    plan: free
+    branch: main
+    repo: https://github.com/pamud/bus-reservation-system # Helper, user needs to change this
+    healthCheckPath: /login
+    envVars:
+      - key: SPRING_DATASOURCE_URL
+        fromDatabase:
+          name: bus-db
+          property: connectionString
+      - key: SPRING_DATASOURCE_USERNAME
+        fromDatabase:
+          name: bus-db
+          property: user
+      - key: SPRING_DATASOURCE_PASSWORD
+        fromDatabase:
+          name: bus-db
+          property: password
+
+databases:
+  - name: bus-db
+    plan: free
+    databaseName: bus_reservation
+    user: bus_user

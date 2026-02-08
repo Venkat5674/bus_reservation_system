@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/header :: head}"></head>
+
+<body>
+    <nav th:replace="~{fragments/header :: navbar}"></nav>
+
+    <div class="main-content">
+        <div class="container py-5">
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <div class="card shadow-sm">
+                        <div class="card-header bg-warning text-dark">Add New Schedule</div>
+                        <div class="card-body">
+                            <form th:action="@{/admin/add-schedule}" method="post" th:object="${schedule}">
+                                <div class="mb-3">
+                                    <label for="bus" class="form-label">Bus</label>
+                                    <select class="form-select" id="bus" th:field="*{bus}">
+                                        <option th:each="bus : ${buses}" th:value="${bus.id}"
+                                            th:text="${bus.busName} + ' (' + ${bus.busNumber} + ')'"></option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="route" class="form-label">Route</label>
+                                    <select class="form-select" id="route" th:field="*{route}">
+                                        <option th:each="route : ${routes}" th:value="${route.id}"
+                                            th:text="${route.source} + ' - ' + ${route.destination}"></option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="departureTime" class="form-label">Departure Time</label>
+                                    <input type="datetime-local" class="form-control" id="departureTime"
+                                        th:field="*{departureTime}" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="arrivalTime" class="form-label">Arrival Time</label>
+                                    <input type="datetime-local" class="form-control" id="arrivalTime"
+                                        th:field="*{arrivalTime}" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="price" class="form-label">Price</label>
+                                    <input type="number" step="0.01" class="form-control" id="price" th:field="*{price}"
+                                        required>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Add Schedule</button>
+                                <a th:href="@{/admin/dashboard}" class="btn btn-secondary">Cancel</a>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+
+</html>

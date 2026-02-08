@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/header :: head}"></head>
+
+<body>
+    <nav th:replace="~{fragments/header :: navbar}"></nav>
+
+    <div class="main-content">
+        <div class="container py-5">
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <div class="card shadow-sm">
+                        <div class="card-header bg-primary text-white">Add New Bus</div>
+                        <div class="card-body">
+                            <form th:action="@{/admin/add-bus}" method="post" th:object="${bus}">
+                                <div class="mb-3">
+                                    <label for="busNumber" class="form-label">Bus Number</label>
+                                    <input type="text" class="form-control" id="busNumber" th:field="*{busNumber}"
+                                        required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="busName" class="form-label">Bus Name</label>
+                                    <input type="text" class="form-control" id="busName" th:field="*{busName}" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="totalSeats" class="form-label">Total Seats</label>
+                                    <input type="number" class="form-control" id="totalSeats" th:field="*{totalSeats}"
+                                        required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="type" class="form-label">Type</label>
+                                    <select class="form-select" id="type" th:field="*{type}">
+                                        <option value="AC">AC</option>
+                                        <option value="NON_AC">NON_AC</option>
+                                        <option value="SLEEPER">SLEEPER</option>
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Add Bus</button>
+                                <a th:href="@{/admin/dashboard}" class="btn btn-secondary">Cancel</a>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+
+</html>

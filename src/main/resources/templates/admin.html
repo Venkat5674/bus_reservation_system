@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/header :: head}"></head>
+
+<body>
+    <nav th:replace="~{fragments/header :: navbar}"></nav>
+
+    <div class="main-content">
+        <div class="container py-5">
+            <div class="row mb-4">
+                <div class="col-12">
+                    <h2 class="fw-bold">Admin Dashboard</h2>
+                    <p class="text-muted">Manage your bus fleet, routes, and schedules.</p>
+                </div>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="card h-100 border-0 shadow-sm text-center p-4">
+                        <div class="card-body">
+                            <div class="bg-light rounded-circle d-inline-flex align-items-center justify-content-center mb-4 text-primary"
+                                style="width: 80px; height: 80px;">
+                                <i class="fas fa-bus fa-2x"></i>
+                            </div>
+                            <h4 class="fw-bold mb-3">Manage Buses</h4>
+                            <p class="text-muted mb-4">Add new buses to the fleet or update existing bus details.</p>
+                            <a th:href="@{/admin/add-bus}" class="btn btn-outline-primary rounded-pill px-4">Add Bus</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100 border-0 shadow-sm text-center p-4">
+                        <div class="card-body">
+                            <div class="bg-light rounded-circle d-inline-flex align-items-center justify-content-center mb-4 text-success"
+                                style="width: 80px; height: 80px;">
+                                <i class="fas fa-map-marked-alt fa-2x"></i>
+                            </div>
+                            <h4 class="fw-bold mb-3">Manage Routes</h4>
+                            <p class="text-muted mb-4">Define new routes, distances and connect cities.</p>
+                            <a th:href="@{/admin/add-route}" class="btn btn-outline-success rounded-pill px-4">Add
+                                Route</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100 border-0 shadow-sm text-center p-4">
+                        <div class="card-body">
+                            <div class="bg-light rounded-circle d-inline-flex align-items-center justify-content-center mb-4 text-warning"
+                                style="width: 80px; height: 80px;">
+                                <i class="fas fa-calendar-alt fa-2x"></i>
+                            </div>
+                            <h4 class="fw-bold mb-3">Manage Schedules</h4>
+                            <p class="text-muted mb-4">Assign buses to routes and set timings and prices.</p>
+                            <a th:href="@{/admin/add-schedule}" class="btn btn-outline-warning rounded-pill px-4">Add
+                                Schedule</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+
+</html>

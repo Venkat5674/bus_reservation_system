@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/header :: head}"></head>
+
+<body>
+    <nav th:replace="~{fragments/header :: navbar}"></nav>
+
+    <div class="main-content">
+        <div class="container py-5">
+            <div class="row">
+                <div class="col-md-10 offset-md-1">
+                    <div class="card shadow-sm">
+                        <div class="card-header bg-success text-white">Booking History</div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover align-middle">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Ticket ID</th>
+                                            <th>Bus</th>
+                                            <th>Route</th>
+                                            <th>Seat No</th>
+                                            <th>Date</th>
+                                            <th>Price</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr th:each="booking : ${bookings}">
+                                            <td th:text="'#' + ${booking.id}">#1</td>
+                                            <td th:text="${booking.schedule.bus.busName}">Bus Name</td>
+                                            <td
+                                                th:text="${booking.schedule.route.source} + ' - ' + ${booking.schedule.route.destination}">
+                                                Source - Dest</td>
+                                            <td th:text="${booking.seatNumber}">1</td>
+                                            <td
+                                                th:text="${#temporals.format(booking.schedule.departureTime, 'yyyy-MM-dd HH:mm')}">
+                                                Date</td>
+                                            <td th:text="'$' + ${booking.schedule.price}">$0.00</td>
+                                            <td><span class="badge bg-primary"
+                                                    th:text="${booking.status}">CONFIRMED</span></td>
+                                        </tr>
+                                        <tr th:if="${#lists.isEmpty(bookings)}">
+                                            <td colspan="7" class="text-center text-muted py-4">No bookings found.</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center mt-3" th:if="${not #lists.isEmpty(bookings)}">
+                <button onclick="window.print()" class="btn btn-secondary">Print Ticket</button>
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+
+</html>

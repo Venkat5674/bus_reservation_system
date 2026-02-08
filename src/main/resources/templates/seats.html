@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/header :: head}"></head>
+
+<body>
+    <nav th:replace="~{fragments/header :: navbar}"></nav>
+
+    <div class="main-content">
+        <div class="container py-5">
+            <div class="row">
+                <div class="col-md-8 offset-md-2">
+                    <div class="card shadow border-0">
+                        <div class="card-header border-0 bg-white pt-4 pb-0">
+                            <h4 class="fw-bold text-center">Select Your Seat</h4>
+                            <p class="text-center text-muted mb-0"
+                                th:text="${schedule.bus.busName} + ' - ' + ${schedule.bus.type}">Bus Info</p>
+                        </div>
+                        <div class="card-body p-5">
+
+                            <div class="d-flex justify-content-center gap-4 mb-4 small">
+                                <div class="d-flex align-items-center">
+                                    <div class="seat available me-2"
+                                        style="width: 25px; height: 25px; cursor: default;"></div> Available
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <div class="seat booked me-2"
+                                        style="width: 25px; height: 25px; cursor: default; transform: none;"></div>
+                                    Booked
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <div class="seat selected me-2"
+                                        style="width: 25px; height: 25px; cursor: default; transform: none;"></div>
+                                    Selected
+                                </div>
+                            </div>
+
+                            <div th:if="${error}" class="alert alert-danger text-center" th:text="${error}"></div>
+
+                            <!-- Steering Wheel Indicator -->
+                            <div class="text-end pe-5 mb-3 text-muted">
+                                <i class="fas fa-dharmachakra fa-2x" style="transform: rotate(-30deg);"></i>
+                                <small class="d-block">Driver</small>
+                            </div>
+
+                            <div class="bus-layout mb-4">
+                                <th:block th:each="i : ${#numbers.sequence(1, schedule.bus.totalSeats)}">
+
+                                    <div th:if="${bookedSeats.contains(i)}" class="seat booked" th:text="${i}"></div>
+
+                                    <div th:unless="${bookedSeats.contains(i)}" class="seat available"
+                                        th:attr="onclick=|selectSeat('${i}', this)|" th:text="${i}"></div>
+
+                                    <!-- Add spacer every 2 seats if total seats allow, or just mimic CSS logic -->
+                                    <!-- Original JSP: <c:if test="${i % 4 == 2}"><div></div></c:if> -->
+                                    <div th:if="${i % 4 == 2}"></div>
+                                </th:block>
+                            </div>
+
+                            <hr class="my-4">
+
+                            <form th:action="@{/book-ticket}" method="post" id="bookingForm" class="text-center">
+                                <input type="hidden" name="scheduleId" th:value="${schedule.id}">
+                                <input type="hidden" name="seatNumber" id="selectedSeat">
+
+                                <div
+                                    class="d-flex justify-content-between align-items-center bg-light p-3 rounded-3 mb-3">
+                                    <div>
+                                        <small class="text-muted d-block text-start">Selected Seat</small>
+                                        <span id="seatDisplay" class="fw-bold fs-5">None</span>
+                                    </div>
+                                    <div>
+                                        <small class="text-muted d-block text-end">Total Price</small>
+                                        <span class="fw-bold fs-5 text-primary"
+                                            th:text="'$' + ${schedule.price}">$0.00</span>
+                                    </div>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary w-100 btn-lg shadow-sm" id="bookBtn"
+                                    disabled>
+                                    Confirm Booking <i class="fas fa-check-circle ms-2"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <style>
+            /* Override grid for bus layout to handle aisle */
+            .bus-layout {
+                display: grid;
+                grid-template-columns: repeat(5, 1fr);
+                /* 2 seats + aisle + 2 seats */
+                gap: 15px;
+                max-width: 380px;
+            }
+        </style>
+
+        <script>
+            function selectSeat(seatNum, element) {
+                // Deselect previous
+                document.querySelectorAll('.seat.selected').forEach(el => {
+                    el.classList.remove('selected');
+                    el.classList.add('available');
+                });
+
+                // Select new
+                element.classList.remove('available');
+                element.classList.add('selected');
+
+                document.getElementById('selectedSeat').value = seatNum;
+                document.getElementById('seatDisplay').innerText = seatNum;
+                document.getElementById('bookBtn').disabled = false;
+            }
+        </script>
+    </div>
+
+    <div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+
+</html>

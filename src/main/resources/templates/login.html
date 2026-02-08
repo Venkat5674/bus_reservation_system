@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/header :: head}"></head>
+
+<body>
+    <nav th:replace="~{fragments/header :: navbar}"></nav>
+
+    <div class="main-content">
+        <div class="container d-flex align-items-center justify-content-center" style="min-height: 80vh;">
+            <div class="card shadow-lg" style="width: 100%; max-width: 400px; border-radius: 20px;">
+                <div class="card-body p-5">
+                    <div class="text-center mb-4">
+                        <div class="bg-light rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
+                            style="width: 60px; height: 60px;">
+                            <i class="fas fa-user text-primary fa-lg"></i>
+                        </div>
+                        <h3 class="fw-bold text-dark">Welcome Back</h3>
+                        <p class="text-muted">Login to manage your bookings</p>
+                    </div>
+
+                    <div th:if="${error}" class="alert alert-danger rounded-3 small text-center shake-animation"
+                        th:text="${error}"></div>
+
+                    <form th:action="@{/login}" method="post">
+                        <div class="mb-3">
+                            <label for="email" class="form-label small fw-bold text-muted">EMAIL ADDRESS</label>
+                            <input type="email" class="form-control" id="email" name="email"
+                                placeholder="name@example.com" required>
+                        </div>
+                        <div class="mb-4">
+                            <label for="password" class="form-label small fw-bold text-muted">PASSWORD</label>
+                            <input type="password" class="form-control" id="password" name="password"
+                                placeholder="••••••••" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100 py-2 shadow-sm">Login</button>
+                    </form>
+
+                    <div class="text-center mt-4">
+                        <p class="small text-muted">Don't have an account? <a th:href="@{/register}"
+                                class="text-primary fw-bold text-decoration-none">Register here</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+
+</html>
