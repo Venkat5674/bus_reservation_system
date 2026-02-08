@@ -14,7 +14,8 @@ This guide explains how to deploy the Bus Reservation System to Render.com.
 3.  Connect your GitHub repository.
 4.  Render will automatically detect `render.yaml` and configure:
     - A **Web Service** (Docker) for the app.
-    - A **PostgreSQL Database** (Note: Our app uses MySQL syntax, but Render native database is Postgres. **CRITICAL: You must provide your own MySQL database URL** or modify the code to support Postgres. Since this project is MySQL-based, proceed to Method 2 for better control).
+    - A **PostgreSQL Database** (Native to Render, Free Tier available).
+    - The application is updated to automatically detect and use PostgreSQL when deployed.
 
 ### Method 2: Manual Web Service (Best for External MySQL)
 1.  **Database**:
