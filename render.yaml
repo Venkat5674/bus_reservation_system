@@ -4,7 +4,7 @@ services:
     env: docker
     plan: free
     branch: main
-    repo: https://github.com/pamud/bus-reservation-system # Helper, user needs to change this
+    repo: https://github.com/Venkat5674/bus_reservation_system # Helper, user needs to change this
     healthCheckPath: /login
     envVars:
       - key: SPRING_DATASOURCE_URL
