@@ -8,11 +8,21 @@ services:
     numInstances: 1
     healthCheckPath: /
     envVars:
-      - key: DB_URL
+      - key: SPRING_PROFILES_ACTIVE
+        value: prod
+      - key: DB_HOST
         fromDatabase:
           name: bus-db
-          property: connectionString
-      - key: DB_USERNAME
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: bus-db
+          property: port
+      - key: DB_NAME
+        fromDatabase:
+          name: bus-db
+          property: database
+      - key: DB_USER
         fromDatabase:
           name: bus-db
           property: user
@@ -20,7 +30,7 @@ services:
         fromDatabase:
           name: bus-db
           property: password
-      - key:  PORT
+      - key: PORT
         value: 8080
 
 databases:
