@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8
+    container_name: mysql_local
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: busdb
+    ports:
+      - "3307:3306"

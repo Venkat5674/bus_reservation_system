@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard - BusBooker</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body onload="checkAuth('ROLE_ADMIN'); loadAdminBuses();">
+    <div class="navbar">
+        <a href="/" class="navbar-brand">BusBooker Admin</a>
+        <div class="nav-links">
+            <button onclick="logout()">Logout</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <h1>Admin Dashboard</h1>
+
+        <div class="card">
+            <h2>Add New Bus</h2>
+            <form onsubmit="handleAddBus(event)">
+                <div class="grid" style="grid-template-columns: 1fr 1fr;">
+                    <div class="form-group">
+                        <label>Bus Number</label>
+                        <input type="text" name="busNumber" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Price</label>
+                        <input type="number" name="price" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Source</label>
+                        <input type="text" name="source" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Destination</label>
+                        <input type="text" name="destination" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Departure Time</label>
+                        <input type="datetime-local" name="departureTime" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Arrival Time</label>
+                        <input type="datetime-local" name="arrivalTime" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Total Seats</label>
+                        <input type="number" name="totalSeats" class="form-control" required>
+                    </div>
+                </div>
+                <button type="submit" class="btn">Add Bus</button>
+            </form>
+        </div>
+
+        <h2>All Buses</h2>
+        <div id="bus-list" class="grid">
+            <!-- Buses will be loaded here -->
+        </div>
+    </div>
+    <script src="/js/dashboard.js"></script>
+    <script src="/js/auth.js"></script>
+</body>
+
+</html>

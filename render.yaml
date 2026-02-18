@@ -1,0 +1,31 @@
+services:
+  - type: web
+    name: bus-reservation-system
+    env: docker
+    plan: free
+    region: ohio
+    branch: main
+    numInstances: 1
+    healthCheckPath: /
+    envVars:
+      - key: DB_URL
+        fromDatabase:
+          name: bus-db
+          property: connectionString
+      - key: DB_USERNAME
+        fromDatabase:
+          name: bus-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: bus-db
+          property: password
+      - key:  PORT
+        value: 8080
+
+databases:
+  - name: bus-db
+    databaseName: busdb
+    user: bususer
+    plan: free
+    region: ohio

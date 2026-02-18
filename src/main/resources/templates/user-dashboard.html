@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>User Dashboard - BusBooker</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body onload="checkAuth('ROLE_USER'); loadUserBookings();">
+    <div class="navbar">
+        <a href="/" class="navbar-brand">BusBooker</a>
+        <div class="nav-links">
+            <a href="/bus-search" class="btn" style="margin-right: 1rem;">Search Buses</a>
+            <button onclick="logout()">Logout</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <h1>My Dashboard</h1>
+
+        <h2>My Bookings</h2>
+        <div id="booking-list" class="grid">
+            <!-- Bookings will be loaded here -->
+        </div>
+    </div>
+    <script src="/js/dashboard.js"></script>
+    <script src="/js/auth.js"></script>
+</body>
+
+</html>
