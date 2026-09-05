@@ -68,6 +68,10 @@ The production profile uses PostgreSQL with SSL and `ddl-auto: update`, so the t
 | `GET` | `/api/buses/search` | Search Bus by Source/Dest | Public/User |
 | `POST` | `/api/buses` | Add New Bus | **Admin** |
 
+## Deployed Link : 
+
+    https://bus-reservation-system-mxoi.onrender.com/
+
 ## 🤝 Contributing
 
 Contributions are welcome! Please fork the repository and submit a Pull Request.
