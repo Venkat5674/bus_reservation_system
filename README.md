@@ -12,24 +12,23 @@ A comprehensive, cloud-native Bus Reservation System built with Spring Boot, des
 -   **Search Functionality**: Filter buses by source and destination.
 -   **Responsive UI**: Built with Thymeleaf and modern CSS for a premium user experience.
 -   **Global Exception Handling**: Graceful error handling with custom responses.
--   **Production Ready**: Docker support and ready-to-deploy configuration for Render (PostgreSQL).
+-   **Terminal Ready**: Runs directly with the Maven wrapper and uses a local file-backed H2 database by default.
 
 ## 🛠️ Tech Stack
 
 -   **Backend**: Java 17, Spring Boot 3.5.10
 -   **Database**:
-    -   **Development**: MySQL
-    -   **Production**: PostgreSQL (Render Managed)
+    -   **Development**: H2 file database (no separate database server required)
+    -   **Optional**: MySQL or PostgreSQL through environment variables
 -   **Security**: Spring Security, JWT
 -   **Frontend**: Thymeleaf, HTML5, CSS3, JavaScript
--   **DevOps**: Docker, Maven, Render Blueprints
+-   **DevOps**: Maven
 
 ## 📋 Prerequisites
 
 -   Java 17 or higher
 -   Maven 3.8+
--   MySQL 8.0+ (for local development)
--   Docker (optional, for containerized run)
+-   Maven is not required because the project includes the Maven wrapper.
 
 ## 🔧 Installation & Running Locally
 
@@ -39,52 +38,23 @@ A comprehensive, cloud-native Bus Reservation System built with Spring Boot, des
     cd bus-reservation_system
     ```
 
-2.  **Configure Database (MySQL)**
-    -   Create a database named `busdb` in your MySQL server.
-    -   Update `src/main/resources/application.yaml` if your credentials differ from the defaults:
-        ```yaml
-        spring:
-          datasource:
-            url: jdbc:mysql://localhost:3306/busdb
-            username: root
-            password: root
-        ```
-
-3.  **Build and Run**
+2.  **Build and Run**
     ```bash
-    mvn clean install
-    mvn spring-boot:run
+    .\mvnw.cmd clean install
+    .\mvnw.cmd spring-boot:run
     ```
     The application will start on `http://localhost:8080`.
 
-## 🐳 Docker Support
+The default database is stored in the project's `data` directory and is created automatically. To use an external database, set `DB_URL`, `DB_USERNAME`, `DB_PASSWORD`, `DB_DRIVER`, and `DB_DIALECT` before starting the application.
 
-To run the application as a Docker container:
+## Deploy on Railway
 
-1.  **Build the Image**
-    ```bash
-    docker build -t bus-reservation .
-    ```
+1. Push the project to GitHub.
+2. Create a new project at [Railway](https://railway.app/) and choose **Deploy from GitHub Repo**.
+3. Select this repository. Railway will use `railway.json` to build and start the application.
+4. Open the generated Railway domain. No Docker or database service is required for a demo deployment.
 
-2.  **Run the Container**
-    ```bash
-    docker run -p 8080:8080 bus-reservation
-    ```
-
-## ☁️ Deployment (Render)
-
-This project is configured for **Render Blueprints**.
-
-1.  Push your code to a GitHub repository.
-2.  Log in to [Render](https://render.com/).
-3.  Click **New +** -> **Blueprint**.
-4.  Connect your repository.
-5.  Render will automatically detect `render.yaml` and provision:
-    -   A **PostgreSQL Database**.
-    -   A **Web Service** (Spring Boot App) connected to the database.
-6.  Approve the deployment and wait for the "Live" status!
-
-**Note**: The deployment automatically uses the `prod` profile (`application-prod.yaml`) which is optimized for PostgreSQL on Render.
+The deployed app uses the same H2 file database as local development. Railway's default filesystem is temporary, so database data can be lost when the service is redeployed. Use an external database by setting the `DB_*` variables when persistent production data is required.
 
 ## 🔌 API Endpoints
 
@@ -95,8 +65,6 @@ This project is configured for **Render Blueprints**.
 | `GET` | `/api/buses` | Get All Buses (Paginated) | Public/User |
 | `GET` | `/api/buses/search` | Search Bus by Source/Dest | Public/User |
 | `POST` | `/api/buses` | Add New Bus | **Admin** |
-
-## Deployement Link : https://bus-reservation-system-ffgo.onrender.com/
 
 ## 🤝 Contributing
 
