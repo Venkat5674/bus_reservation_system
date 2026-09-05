@@ -22,7 +22,7 @@ A comprehensive, cloud-native Bus Reservation System built with Spring Boot, des
     -   **Optional**: MySQL or PostgreSQL through environment variables
 -   **Security**: Spring Security, JWT
 -   **Frontend**: Thymeleaf, HTML5, CSS3, JavaScript
--   **DevOps**: Maven
+-   **DevOps**: Maven, Render
 
 ## 📋 Prerequisites
 
@@ -47,14 +47,16 @@ A comprehensive, cloud-native Bus Reservation System built with Spring Boot, des
 
 The default database is stored in the project's `data` directory and is created automatically. To use an external database, set `DB_URL`, `DB_USERNAME`, `DB_PASSWORD`, `DB_DRIVER`, and `DB_DIALECT` before starting the application.
 
-## Deploy on Railway
+## Deploy on Render with Supabase
 
-1. Push the project to GitHub.
-2. Create a new project at [Railway](https://railway.app/) and choose **Deploy from GitHub Repo**.
-3. Select this repository. Railway will use `railway.json` to build and start the application.
-4. Open the generated Railway domain. No Docker or database service is required for a demo deployment.
+1. Create a free project at [Supabase](https://supabase.com/) and open **Project Settings -> Database**.
+2. Copy the direct connection host, or use the Supabase session pooler host if your network does not support IPv6. Use port `5432`, database `postgres`, and user `postgres`.
+3. Push the project to GitHub.
+4. In [Render](https://render.com/), choose **New -> Blueprint** and select the repository. Render will detect `render.yaml` and build the Docker image.
+5. In the Render service environment variables, set `DB_HOST` to the Supabase host and `DB_PASSWORD` to the Supabase database password. The other PostgreSQL values are already configured.
+6. Deploy and open the generated Render URL.
 
-The deployed app uses the same H2 file database as local development. Railway's default filesystem is temporary, so database data can be lost when the service is redeployed. Use an external database by setting the `DB_*` variables when persistent production data is required.
+The production profile uses PostgreSQL with SSL and `ddl-auto: update`, so the tables are created automatically in Supabase. Render's free web service may sleep after inactivity, but Supabase stores the application data persistently.
 
 ## 🔌 API Endpoints
 
