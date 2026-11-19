@@ -3,47 +3,270 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Search Buses - BusBooker</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Available Buses - BusBooker</title>
+    <!-- Google Fonts & FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Leaflet.js CSS for Map Integration -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link rel="stylesheet" href="/css/style.css">
 </head>
 
-<body onload="checkAuth('ROLE_USER')">
-    <div class="navbar">
-        <a href="/" class="navbar-brand">BusBooker</a>
-        <div class="nav-links">
-            <a href="/user-dashboard" class="btn btn-secondary" style="margin-right: 1rem;">Dashboard</a>
-            <button onclick="logout()">Logout</button>
+<body onload="initBusSearchPage()">
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="navbar-brand">
+                <i class="fa-solid fa-bus-simple logo-icon"></i> BusBooker
+            </a>
+            <div class="nav-links" id="nav-links">
+                <a href="/user-dashboard" class="btn btn-secondary btn-sm"><i class="fa-solid fa-ticket"></i> My
+                    Bookings</a>
+                <button onclick="logout()" class="btn btn-danger-outline btn-sm"><i
+                        class="fa-solid fa-arrow-right-from-bracket"></i> Logout</button>
+            </div>
         </div>
-    </div>
+    </nav>
 
-    <div class="container">
-        <h1>Find Your Bus</h1>
+    <!-- Search Header Bar -->
+    <div style="background: white; border-bottom: 1px solid var(--border-color); padding: 1.5rem 0;">
+        <div class="container" style="padding-top: 0; padding-bottom: 0;">
+            <form id="search-form" onsubmit="handleSearch(event)">
+                <div class="search-form-grid" style="grid-template-columns: 1.2fr auto 1.2fr 1fr auto;">
+                    <div class="input-icon-group">
+                        <label>From</label>
+                        <div class="input-with-icon">
+                            <i class="fa-solid fa-location-dot"></i>
+                            <input type="text" id="source" placeholder="Origin City" value="Hyderabad" required>
+                        </div>
+                    </div>
 
-        <div class="card">
-            <form onsubmit="handleSearch(event)">
-                <div class="grid" style="grid-template-columns: 1fr 1fr auto;">
-                    <div class="form-group">
-                        <label>Source</label>
-                        <input type="text" id="source" class="form-control" required>
+                    <div class="swap-btn" onclick="swapCities()" title="Swap cities">
+                        <i class="fa-solid fa-arrow-right-arrow-left"></i>
                     </div>
-                    <div class="form-group">
-                        <label>Destination</label>
-                        <input type="text" id="destination" class="form-control" required>
+
+                    <div class="input-icon-group">
+                        <label>To</label>
+                        <div class="input-with-icon">
+                            <i class="fa-solid fa-location-crosshairs"></i>
+                            <input type="text" id="destination" placeholder="Destination City" value="Bangalore"
+                                required>
+                        </div>
                     </div>
-                    <div class="form-group" style="display: flex; align-items: flex-end;">
-                        <button type="submit" class="btn">Search</button>
+
+                    <div class="input-icon-group">
+                        <label>Date</label>
+                        <div class="input-with-icon">
+                            <i class="fa-regular fa-calendar-days"></i>
+                            <input type="date" id="travel-date">
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 1.25rem;">
+                        <button type="submit" class="btn btn-primary" style="height: 50px;">
+                            <i class="fa-solid fa-magnifying-glass"></i> Modify
+                        </button>
                     </div>
                 </div>
             </form>
         </div>
+    </div>
 
-        <div id="search-results" class="grid">
-            <!-- Results will appear here -->
+    <!-- Main Results Area -->
+    <div class="container">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+            <div>
+                <h2 style="font-size: 1.6rem; font-weight: 800; color: var(--text-main);">Available Fleet</h2>
+                <p id="results-count" style="color: var(--text-muted); font-size: 0.95rem; font-weight: 600;">Searching
+                    available buses...</p>
+            </div>
+
+            <div style="display: flex; gap: 0.5rem; align-items: center;">
+                <span style="font-size: 0.85rem; font-weight: 700; color: var(--text-muted);">SORT BY:</span>
+                <span class="route-pill" onclick="sortBuses('price')">Price <i
+                        class="fa-solid fa-arrow-up-wide-short"></i></span>
+                <span class="route-pill" onclick="sortBuses('seats')">Seats Available</span>
+            </div>
+        </div>
+
+        <!-- Bus Cards Container -->
+        <div id="search-results" class="bus-list-wrapper">
+            <!-- Rendered dynamically by bus.js -->
         </div>
     </div>
-    <script src="/js/bus.js"></script>
+
+    <!-- ==============================================================================
+         INTERACTIVE SEAT SELECTION MODAL (AbhiBus / RedBus Coach Layout)
+         ============================================================================== -->
+    <div class="seat-modal-backdrop" id="seat-modal-backdrop">
+        <div class="seat-modal">
+            <div class="seat-modal-header">
+                <div>
+                    <h3 style="font-size: 1.25rem; font-weight: 800; color: var(--text-main);" id="modal-bus-title">Bus
+                        Coach Layout</h3>
+                    <p style="font-size: 0.85rem; color: var(--text-muted);">Select your desired seat to proceed with
+                        reservation.</p>
+                </div>
+                <button onclick="closeSeatModal()"
+                    style="background: none; border: none; font-size: 1.5rem; color: var(--text-muted); cursor: pointer;">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="seat-modal-body">
+                <!-- Left: Coach Visual -->
+                <div>
+                    <div class="bus-coach-container">
+                        <!-- Driver Steering Area -->
+                        <div class="driver-area">
+                            <span
+                                style="font-size: 0.75rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-right: 0.5rem; align-self: center;">FRONT
+                                / DRIVER</span>
+                            <div class="steering-wheel"><i class="fa-solid fa-circle-dot"></i></div>
+                        </div>
+
+                        <!-- 2x2 Seating Grid with Aisle -->
+                        <div class="seat-grid-2x2" id="seat-grid">
+                            <!-- Populated dynamically by bus.js -->
+                        </div>
+                    </div>
+
+                    <!-- Legend -->
+                    <div class="seat-legend">
+                        <div class="legend-item">
+                            <div class="legend-box avail"></div> Available
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-box sel"></div> Selected
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-box bkd"></div> Booked
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: Booking Summary & Price Breakdown -->
+                <div class="seat-summary-card">
+                    <div>
+                        <h4
+                            style="font-size: 1.1rem; font-weight: 700; margin-bottom: 1.25rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.75rem;">
+                            <i class="fa-solid fa-receipt" style="color: var(--primary);"></i> Fare Summary
+                        </h4>
+
+                        <div class="summary-row">
+                            <span style="color: var(--text-muted);">Bus Number:</span>
+                            <strong id="summary-bus-no">-</strong>
+                        </div>
+                        <div class="summary-row">
+                            <span style="color: var(--text-muted);">Selected Seat:</span>
+                            <strong id="summary-selected-seat"
+                                style="color: var(--primary); font-size: 1.1rem;">None</strong>
+                        </div>
+                        <div class="summary-row">
+                            <span style="color: var(--text-muted);">Base Ticket Fare:</span>
+                            <span id="summary-base-fare">$0.00</span>
+                        </div>
+                        <div class="summary-row">
+                            <span style="color: var(--text-muted);">Taxes & Fees (5%):</span>
+                            <span id="summary-tax">$0.00</span>
+                        </div>
+                        <div class="summary-row total">
+                            <span>Total Payable:</span>
+                            <span id="summary-total-fare" style="color: var(--primary);">$0.00</span>
+                        </div>
+
+                        <div
+                            style="margin-top: 1.5rem; background: var(--secondary-light); padding: 0.9rem; border-radius: var(--radius-sm); font-size: 0.8rem; color: var(--text-muted);">
+                            <i class="fa-solid fa-shield-halved" style="color: var(--success);"></i> Free cancellation
+                            up to 6 hours before departure.
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 1.5rem;">
+                        <button id="confirm-booking-btn" onclick="confirmBooking()" class="btn btn-primary"
+                            style="width: 100%; height: 50px;" disabled>
+                            <i class="fa-solid fa-check-circle"></i> Confirm & Book Seat
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==============================================================================
+         INTERACTIVE ROUTE MAP MODAL (Leaflet.js + OpenStreetMap)
+         ============================================================================== -->
+    <div class="seat-modal-backdrop" id="map-modal-backdrop">
+        <div class="seat-modal" style="max-width: 800px;">
+            <div class="seat-modal-header">
+                <div>
+                    <h3 style="font-size: 1.25rem; font-weight: 800; color: var(--text-main);" id="map-modal-title">Bus
+                        Route Map</h3>
+                    <p style="font-size: 0.85rem; color: var(--text-muted);">Live geographic route navigation between
+                        boarding and dropping points.</p>
+                </div>
+                <button onclick="closeRouteMap()"
+                    style="background: none; border: none; font-size: 1.5rem; color: var(--text-muted); cursor: pointer;">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div style="padding: 1.5rem;">
+                <div id="route-map-container"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification Element -->
+    <div id="toast" class="toast"></div>
+
+    <!-- Leaflet JS & Scripts -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="/js/auth.js"></script>
     <script src="/js/dashboard.js"></script>
+    <script src="/js/bus.js"></script>
+    <script>
+        function initBusSearchPage() {
+            // Read URL query parameters
+            const urlParams = new URLSearchParams(window.location.search);
+            const src = urlParams.get('source');
+            const dest = urlParams.get('destination');
+
+            if (src) document.getElementById('source').value = src;
+            if (dest) document.getElementById('destination').value = dest;
+
+            const travelDateInput = document.getElementById('travel-date');
+            if (travelDateInput) {
+                const tomorrow = new Date();
+                tomorrow.setDate(tomorrow.getDate() + 1);
+                travelDateInput.value = tomorrow.toISOString().split('T')[0];
+            }
+
+            // Dynamic Navbar based on authentication session
+            const token = localStorage.getItem('token');
+            const role = localStorage.getItem('role');
+            const navLinks = document.getElementById('nav-links');
+            if (navLinks) {
+                if (token) {
+                    const dashboardUrl = role === 'ROLE_ADMIN' ? '/admin-dashboard' : '/user-dashboard';
+                    const dashboardLabel = role === 'ROLE_ADMIN' ? 'Admin Fleet' : 'My Bookings';
+                    navLinks.innerHTML = `
+                        <a href="${dashboardUrl}" class="btn btn-secondary btn-sm"><i class="fa-solid fa-ticket"></i> ${dashboardLabel}</a>
+                        <button onclick="logout()" class="btn btn-danger-outline btn-sm"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</button>
+                    `;
+                } else {
+                    navLinks.innerHTML = `
+                        <a href="/login" class="btn btn-secondary btn-sm"><i class="fa-solid fa-user"></i> Login</a>
+                        <a href="/register" class="btn btn-primary btn-sm"><i class="fa-solid fa-user-plus"></i> Register</a>
+                    `;
+                }
+            }
+
+            // Trigger search
+            handleSearch(null);
+        }
+    </script>
 </body>
 
 </html>

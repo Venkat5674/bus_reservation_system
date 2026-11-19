@@ -3,65 +3,198 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Admin Dashboard - BusBooker</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fleet Administration Portal - BusBooker</title>
+    <!-- Google Fonts & FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="/css/style.css">
 </head>
 
-<body onload="checkAuth('ROLE_ADMIN'); loadAdminBuses();">
-    <div class="navbar">
-        <a href="/" class="navbar-brand">BusBooker Admin</a>
-        <div class="nav-links">
-            <button onclick="logout()">Logout</button>
+<body onload="checkAuth('ROLE_ADMIN'); initAdminForm(); loadAdminBuses();">
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="navbar-brand">
+                <i class="fa-solid fa-bus-simple logo-icon"></i> BusBooker <span class="badge badge-primary"
+                    style="margin-left: 0.5rem;">Admin</span>
+            </a>
+            <div class="nav-links">
+                <span id="admin-user-badge" class="badge badge-info" style="font-size: 0.8rem; padding: 0.4rem 0.8rem;">
+                    <i class="fa-solid fa-user-shield"></i> Admin
+                </span>
+                <a href="/bus-search" target="_blank" class="btn btn-secondary btn-sm"><i
+                        class="fa-solid fa-arrow-up-right-from-square"></i> Live Search View</a>
+                <button onclick="logout()" class="btn btn-danger-outline btn-sm"><i
+                        class="fa-solid fa-arrow-right-from-bracket"></i> Logout</button>
+            </div>
         </div>
-    </div>
+    </nav>
 
     <div class="container">
-        <h1>Admin Dashboard</h1>
+        <!-- Header -->
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+            <div>
+                <h1 style="font-size: 2rem; font-weight: 800; color: var(--text-main);">Fleet Operations Center</h1>
+                <p style="color: var(--text-muted); font-size: 0.95rem;">Manage schedules, create new routes, and
+                    monitor live seat capacities across all operating corridors.</p>
+            </div>
+        </div>
 
-        <div class="card">
-            <h2>Add New Bus</h2>
-            <form onsubmit="handleAddBus(event)">
-                <div class="grid" style="grid-template-columns: 1fr 1fr;">
-                    <div class="form-group">
-                        <label>Bus Number</label>
-                        <input type="text" name="busNumber" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Price</label>
-                        <input type="number" name="price" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Source</label>
-                        <input type="text" name="source" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Destination</label>
-                        <input type="text" name="destination" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Departure Time</label>
-                        <input type="datetime-local" name="departureTime" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Arrival Time</label>
-                        <input type="datetime-local" name="arrivalTime" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Total Seats</label>
-                        <input type="number" name="totalSeats" class="form-control" required>
+        <!-- Metric Stat Cards -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; margin-bottom: 2.5rem;">
+            <div class="card" style="padding: 1.5rem; display: flex; align-items: center; gap: 1.25rem;">
+                <div style="width: 52px; height: 52px; border-radius: var(--radius-md); background: #eff6ff; color: #2563eb; display: flex; align-items: center; justify-content: center; font-size: 1.4rem;">
+                    <i class="fa-solid fa-bus"></i>
+                </div>
+                <div>
+                    <div
+                        style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">
+                        Active Buses</div>
+                    <div style="font-size: 1.8rem; font-weight: 800; color: var(--text-main);" id="stat-total-buses">0
                     </div>
                 </div>
-                <button type="submit" class="btn">Add Bus</button>
+            </div>
+
+            <div class="card" style="padding: 1.5rem; display: flex; align-items: center; gap: 1.25rem;">
+                <div style="width: 52px; height: 52px; border-radius: var(--radius-md); background: #ecfdf5; color: #10b981; display: flex; align-items: center; justify-content: center; font-size: 1.4rem;">
+                    <i class="fa-solid fa-couch"></i>
+                </div>
+                <div>
+                    <div
+                        style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">
+                        Total Fleet Capacity</div>
+                    <div style="font-size: 1.8rem; font-weight: 800; color: #10b981;" id="stat-total-capacity">0</div>
+                </div>
+            </div>
+
+            <div class="card" style="padding: 1.5rem; display: flex; align-items: center; gap: 1.25rem;">
+                <div style="width: 52px; height: 52px; border-radius: var(--radius-md); background: #fef3c7; color: #d97706; display: flex; align-items: center; justify-content: center; font-size: 1.4rem;">
+                    <i class="fa-solid fa-chair"></i>
+                </div>
+                <div>
+                    <div
+                        style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">
+                        Available Seats</div>
+                    <div style="font-size: 1.8rem; font-weight: 800; color: #d97706;" id="stat-available-capacity">0
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add Bus Card Form -->
+        <div class="card" style="margin-bottom: 2.5rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                <h2 style="font-size: 1.35rem; font-weight: 800; color: var(--text-main); display: flex; align-items: center; gap: 0.6rem;">
+                    <i class="fa-solid fa-circle-plus" style="color: var(--primary);"></i> Schedule New Bus Service
+                </h2>
+                <span style="font-size: 0.85rem; color: var(--text-muted);">
+                    <i class="fa-solid fa-shield"></i> Admin Access Verified
+                </span>
+            </div>
+
+            <form onsubmit="handleAddBus(event)">
+                <div
+                    style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.25rem; margin-bottom: 1.5rem;">
+                    <div class="form-group">
+                        <label>Bus Registration Number</label>
+                        <div class="input-with-icon">
+                            <i class="fa-solid fa-bus"></i>
+                            <input type="text" name="busNumber" class="form-control" placeholder="KA-01-EXP-999" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Base Ticket Fare ($)</label>
+                        <div class="input-with-icon">
+                            <i class="fa-solid fa-tag"></i>
+                            <input type="number" step="0.01" min="1" name="price" class="form-control" placeholder="25.00" value="25.00" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Source City</label>
+                        <div class="input-with-icon">
+                            <i class="fa-solid fa-location-dot"></i>
+                            <input type="text" name="source" class="form-control" placeholder="Hyderabad" value="Hyderabad" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Destination City</label>
+                        <div class="input-with-icon">
+                            <i class="fa-solid fa-location-crosshairs"></i>
+                            <input type="text" name="destination" class="form-control" placeholder="Bangalore" value="Bangalore" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Departure Date & Time</label>
+                        <div class="input-with-icon">
+                            <i class="fa-solid fa-calendar-day"></i>
+                            <input type="datetime-local" id="add-departure-time" name="departureTime" class="form-control" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Arrival Date & Time</label>
+                        <div class="input-with-icon">
+                            <i class="fa-solid fa-calendar-check"></i>
+                            <input type="datetime-local" id="add-arrival-time" name="arrivalTime" class="form-control" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Total Seating Capacity</label>
+                        <div class="input-with-icon">
+                            <i class="fa-solid fa-couch"></i>
+                            <input type="number" min="10" max="60" name="totalSeats" class="form-control" value="40" required>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary" style="height: 48px; padding: 0 2rem; font-size: 1rem;">
+                    <i class="fa-solid fa-plus"></i> Add Service to Fleet
+                </button>
             </form>
         </div>
 
-        <h2>All Buses</h2>
-        <div id="bus-list" class="grid">
-            <!-- Buses will be loaded here -->
+        <!-- Fleet Table -->
+        <div class="card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                <h2 style="font-size: 1.35rem; font-weight: 800; color: var(--text-main);">
+                    <i class="fa-solid fa-list-check" style="color: var(--primary);"></i> Active Fleet Inventory
+                </h2>
+                <button onclick="loadAdminBuses()" class="btn btn-secondary btn-sm">
+                    <i class="fa-solid fa-rotate-right"></i> Refresh
+                </button>
+            </div>
+
+            <div style="overflow-x: auto;">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Bus Identifier</th>
+                            <th>Operating Route</th>
+                            <th>Departure</th>
+                            <th>Arrival</th>
+                            <th>Ticket Fare</th>
+                            <th>Capacity & Availability</th>
+                        </tr>
+                    </thead>
+                    <tbody id="admin-bus-table-body">
+                        <!-- Populated dynamically by dashboard.js -->
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
-    <script src="/js/dashboard.js"></script>
+
+    <!-- Toast Notification Element -->
+    <div id="toast" class="toast"></div>
+
     <script src="/js/auth.js"></script>
+    <script src="/js/dashboard.js"></script>
 </body>
 
 </html>

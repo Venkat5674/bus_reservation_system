@@ -2,13 +2,40 @@ server:
   port: ${PORT:8080}
 
 spring:
+  application:
+    name: bus-reservation
   datasource:
-    url: ${DB_URL:jdbc:h2:file:./data/busdb;DB_CLOSE_DELAY=-1;AUTO_SERVER=TRUE}
+    url: ${DB_URL:jdbc:h2:file:./data/busdb;DB_CLOSE_DELAY=-1}
     username: ${DB_USERNAME:sa}
     password: ${DB_PASSWORD:}
     driver-class-name: ${DB_DRIVER:org.h2.Driver}
   jpa:
     hibernate:
       ddl-auto: update
-    show-sql: true
-    database-platform: ${DB_DIALECT:org.hibernate.dialect.H2Dialect}
+    show-sql: false
+    open-in-view: false
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: when_authorized
+
+logging:
+  level:
+    root: INFO
+    com.Venkatesh.bus_reservation: INFO
+    org.springframework.web: INFO
+    org.hibernate.SQL: WARN
+
+app:
+  jwt:
+    secret: ${JWT_SECRET:404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970}
+    expiration-ms: ${JWT_EXPIRATION_MS:604800000}
+  admin:
+    email: ${ADMIN_EMAIL:vpamudurti@gmail.com}
+    password: ${ADMIN_PASSWORD:Venkatesh@123}
+    name: ${ADMIN_NAME:Admin Venkatesh}

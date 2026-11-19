@@ -51,7 +51,12 @@ function handleLogin(event, roleCheck) {
             localStorage.setItem('token', data.data.token);
             localStorage.setItem('role', role);
             
-            if (role === 'ROLE_ADMIN') {
+            const redirectUrl = sessionStorage.getItem('redirect_after_login');
+            sessionStorage.removeItem('redirect_after_login');
+
+            if (redirectUrl) {
+                window.location.href = redirectUrl;
+            } else if (role === 'ROLE_ADMIN') {
                 window.location.href = '/admin-dashboard';
             } else {
                 window.location.href = '/user-dashboard';

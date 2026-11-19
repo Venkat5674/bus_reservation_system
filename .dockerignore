@@ -1,6 +1,10 @@
+target/
+!target/*.jar
 .git
-.mvn/wrapper/maven-wrapper.jar
-data
-target
-README.md
-railway.json
+.gitignore
+.env*
+data/
+*.md
+deploy/
+.vscode/
+.idea/

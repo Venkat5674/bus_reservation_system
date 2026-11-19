@@ -3,19 +3,44 @@ services:
     name: bus-reservation-system
     runtime: docker
     plan: free
-    healthCheckPath: /
+    region: oregon
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /actuator/health
     envVars:
       - key: SPRING_PROFILES_ACTIVE
         value: prod
+      - key: PORT
+        value: 10000
       - key: DB_HOST
-        sync: false
+        fromDatabase:
+          name: bus-reservation-db
+          property: host
       - key: DB_PORT
-        value: "5432"
+        fromDatabase:
+          name: bus-reservation-db
+          property: port
       - key: DB_NAME
-        value: postgres
+        fromDatabase:
+          name: bus-reservation-db
+          property: database
       - key: DB_USER
-        value: postgres
+        fromDatabase:
+          name: bus-reservation-db
+          property: user
       - key: DB_PASSWORD
-        sync: false
-      - key: DB_SSLMODE
-        value: require
+        fromDatabase:
+          name: bus-reservation-db
+          property: password
+      - key: JWT_SECRET
+        generateValue: true
+      - key: ADMIN_EMAIL
+        value: admin@busbooker.com
+      - key: ADMIN_PASSWORD
+        value: AdminSecret@123
+
+databases:
+  - name: bus-reservation-db
+    plan: free
+    region: oregon
+    databaseName: busdb
+    user: bususer

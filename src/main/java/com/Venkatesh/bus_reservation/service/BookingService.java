@@ -9,6 +9,7 @@ import com.Venkatesh.bus_reservation.repository.*;
 import com.Venkatesh.bus_reservation.exception.BadRequestException;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -35,7 +36,7 @@ public class BookingService {
         }
 
         // 4️⃣ Check If Seat Already Booked
-        bookingRepository.findByBusIdAndSeatNumber(busId, seatNumber)
+        bookingRepository.findByBusIdAndSeatNumberAndStatus(busId, seatNumber, "CONFIRMED")
                 .ifPresent(existingBooking -> {
                     throw new BadRequestException("Seat already booked");
                 });
@@ -82,5 +83,15 @@ public class BookingService {
     public org.springframework.data.domain.Page<Booking> getAllBookings(
             org.springframework.data.domain.Pageable pageable) {
         return bookingRepository.findAll(pageable);
+    }
+
+    public List<Booking> getUserBookings(Long userId) {
+        return bookingRepository.findByUserId(userId);
+    }
+
+    public List<Integer> getBookedSeatsForBus(Long busId) {
+        return bookingRepository.findByBusIdAndStatus(busId, "CONFIRMED").stream()
+                .map(Booking::getSeatNumber)
+                .toList();
     }
 }

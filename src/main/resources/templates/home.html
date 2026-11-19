@@ -3,124 +3,167 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>BusBooker - Home</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BusBooker - India's Favorite Bus Ticket Booking Platform</title>
+    <!-- Google Fonts & FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="/css/style.css">
-    <style>
-        .hero {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            color: white;
-            padding: 4rem 2rem;
-            text-align: center;
-            border-radius: 0 0 20px 20px;
-            margin-bottom: 2rem;
-        }
-
-        .hero h1 {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-        }
-
-        .hero p {
-            font-size: 1.2rem;
-            margin-bottom: 2rem;
-            opacity: 0.9;
-        }
-
-        .features {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            padding: 2rem;
-        }
-
-        .feature-card {
-            background: white;
-            padding: 2rem;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            text-align: center;
-        }
-
-        .cta-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-        }
-    </style>
 </head>
 
 <body onload="checkLoginState()">
-    <div class="navbar">
-        <a href="/" class="navbar-brand">BusBooker</a>
-        <div class="nav-links" id="nav-links">
-            <!-- Dynamic Content -->
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="navbar-brand">
+                <i class="fa-solid fa-bus-simple logo-icon"></i> BusBooker
+            </a>
+            <div class="nav-links" id="nav-links">
+                <a href="/bus-search"><i class="fa-solid fa-magnifying-glass"></i> Search Buses</a>
+                <a href="/login" class="btn btn-secondary btn-sm"><i class="fa-solid fa-user"></i> Login</a>
+                <a href="/register" class="btn btn-primary btn-sm"><i class="fa-solid fa-user-plus"></i> Register</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Banner with RedBus / AbhiBus Gradient -->
+    <div class="hero-wrapper">
+        <h1 class="hero-title">Book Bus Tickets Online</h1>
+        <p class="hero-subtitle">Travel safely across thousands of destinations with India's most trusted bus booking network.</p>
+    </div>
+
+    <!-- Floating Search Widget -->
+    <div class="search-widget-card">
+        <form id="search-form" onsubmit="redirectToSearch(event)">
+            <div class="search-form-grid">
+                <div class="input-icon-group">
+                    <label>From (Source)</label>
+                    <div class="input-with-icon">
+                        <i class="fa-solid fa-location-dot"></i>
+                        <input type="text" id="source" placeholder="Enter departure city" value="Hyderabad" required>
+                    </div>
+                </div>
+
+                <div class="swap-btn" onclick="swapCities()" title="Swap cities">
+                    <i class="fa-solid fa-arrow-right-arrow-left"></i>
+                </div>
+
+                <div class="input-icon-group">
+                    <label>To (Destination)</label>
+                    <div class="input-with-icon">
+                        <i class="fa-solid fa-location-crosshairs"></i>
+                        <input type="text" id="destination" placeholder="Enter destination city" value="Bangalore" required>
+                    </div>
+                </div>
+
+                <div class="input-icon-group">
+                    <label>Travel Date</label>
+                    <div class="input-with-icon">
+                        <i class="fa-regular fa-calendar-days"></i>
+                        <input type="date" id="travel-date" required>
+                    </div>
+                </div>
+
+                <div style="margin-top: 1.25rem;">
+                    <button type="submit" class="btn btn-primary" style="width: 100%; height: 50px;">
+                        <i class="fa-solid fa-magnifying-glass"></i> Search Buses
+                    </button>
+                </div>
+            </div>
+
+            <!-- Popular Route Quick Pills -->
+            <div class="popular-routes">
+                <span><i class="fa-solid fa-fire" style="color: var(--primary);"></i> Trending:</span>
+                <span class="route-pill" onclick="fillRoute('Hyderabad', 'Bangalore')">Hyderabad &rarr; Bangalore</span>
+                <span class="route-pill" onclick="fillRoute('Mumbai', 'Pune')">Mumbai &rarr; Pune</span>
+                <span class="route-pill" onclick="fillRoute('Chennai', 'Bangalore')">Chennai &rarr; Bangalore</span>
+                <span class="route-pill" onclick="fillRoute('Delhi', 'Jaipur')">Delhi &rarr; Jaipur</span>
+                <span class="route-pill" onclick="fillRoute('Vijayawada', 'Hyderabad')">Vijayawada &rarr; Hyderabad</span>
+            </div>
+        </form>
+    </div>
+
+    <!-- Main Value Proposition & Features -->
+    <div class="container" style="margin-bottom: 4rem;">
+        <div style="text-align: center; margin-bottom: 2.5rem;">
+            <span class="badge badge-primary">Why BusBooker</span>
+            <h2 style="font-size: 2.2rem; font-weight: 800; margin-top: 0.5rem;">The Smartest Way to Travel</h2>
+            <p style="color: var(--text-muted);">Experience seamless bus ticketing with guaranteed seats and instant refunds.</p>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.8rem;">
+            <div style="background: white; padding: 2rem; border-radius: var(--radius-lg); border: 1px solid var(--border-color); box-shadow: var(--shadow-sm); text-align: center;">
+                <div style="width: 60px; height: 60px; background: var(--primary-light); color: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin: 0 auto 1.2rem;">
+                    <i class="fa-solid fa-couch"></i>
+                </div>
+                <h3 style="font-size: 1.2rem; font-weight: 700; margin-bottom: 0.5rem;">Live Seat Selection</h3>
+                <p style="color: var(--text-muted); font-size: 0.92rem;">Choose your preferred window, aisle, or sleeper berth in real-time with our interactive coach layout.</p>
+            </div>
+
+            <div style="background: white; padding: 2rem; border-radius: var(--radius-lg); border: 1px solid var(--border-color); box-shadow: var(--shadow-sm); text-align: center;">
+                <div style="width: 60px; height: 60px; background: #ecfdf5; color: #10b981; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin: 0 auto 1.2rem;">
+                    <i class="fa-solid fa-ban"></i>
+                </div>
+                <h3 style="font-size: 1.2rem; font-weight: 700; margin-bottom: 0.5rem;">Instant Cancellation</h3>
+                <p style="color: var(--text-muted); font-size: 0.92rem;">Plans changed? Cancel your ticket with one click from your dashboard with immediate seat release.</p>
+            </div>
+
+            <div style="background: white; padding: 2rem; border-radius: var(--radius-lg); border: 1px solid var(--border-color); box-shadow: var(--shadow-sm); text-align: center;">
+                <div style="width: 60px; height: 60px; background: #eff6ff; color: #2563eb; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin: 0 auto 1.2rem;">
+                    <i class="fa-solid fa-map-location-dot"></i>
+                </div>
+                <h3 style="font-size: 1.2rem; font-weight: 700; margin-bottom: 0.5rem;">Interactive Route Maps</h3>
+                <p style="color: var(--text-muted); font-size: 0.92rem;">Preview boarding points, dropping stops, and full route maps integrated with live OpenStreetMap view.</p>
+            </div>
+
+            <div style="background: white; padding: 2rem; border-radius: var(--radius-lg); border: 1px solid var(--border-color); box-shadow: var(--shadow-sm); text-align: center;">
+                <div style="width: 60px; height: 60px; background: #fef3c7; color: #d97706; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin: 0 auto 1.2rem;">
+                    <i class="fa-solid fa-shield-halved"></i>
+                </div>
+                <h3 style="font-size: 1.2rem; font-weight: 700; margin-bottom: 0.5rem;">Safe & Verified Fleet</h3>
+                <p style="color: var(--text-muted); font-size: 0.92rem;">Travel in certified BharatBenz, Volvo Multi-Axle, and Scania coaches with GPS tracking & sanitization.</p>
+            </div>
         </div>
     </div>
 
-    <div class="hero">
-        <h1>Welcome to BusBooker</h1>
-        <p>Your journey begins here. Safe, reliable, and comfortable bus travel.</p>
-        <div class="cta-buttons" id="hero-cta">
-            <!-- Dynamic Buttons -->
+    <!-- Footer -->
+    <footer style="margin-top: auto; background: white; border-top: 1px solid var(--border-color); padding: 2.5rem 1.5rem; text-align: center; color: var(--text-muted); font-size: 0.9rem;">
+        <div class="container" style="padding: 0;">
+            <p style="font-weight: 700; color: var(--text-main); font-size: 1.1rem; margin-bottom: 0.5rem;">
+                <i class="fa-solid fa-bus" style="color: var(--primary);"></i> BusBooker Platform
+            </p>
+            <p>&copy; 2026 BusBooker Inc. High performance Spring Boot reservation system.</p>
         </div>
-    </div>
+    </footer>
 
-    <div class="container">
-        <h2 style="text-align: center; margin-bottom: 2rem;">Why Choose Us?</h2>
-        <div class="features">
-            <div class="feature-card">
-                <h3>Easy Booking</h3>
-                <p>Book your seats in just a few clicks with our user-friendly platform.</p>
-            </div>
-            <div class="feature-card">
-                <h3>Best Prices</h3>
-                <p>We offer competitive prices and regular discounts for our travelers.</p>
-            </div>
-            <div class="feature-card">
-                <h3>24/7 Support</h3>
-                <p>Our customer support team is always available to assist you.</p>
-            </div>
-        </div>
-    </div>
-
+    <script src="/js/auth.js"></script>
+    <script src="/js/bus.js"></script>
     <script>
+        // Set default travel date to tomorrow
+        const tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        document.getElementById('travel-date').value = tomorrow.toISOString().split('T')[0];
+
+        function redirectToSearch(e) {
+            e.preventDefault();
+            const src = encodeURIComponent(document.getElementById('source').value.trim());
+            const dest = encodeURIComponent(document.getElementById('destination').value.trim());
+            window.location.href = `/bus-search?source=${src}&destination=${dest}`;
+        }
+
         function checkLoginState() {
             const token = localStorage.getItem('token');
             const role = localStorage.getItem('role');
             const navLinks = document.getElementById('nav-links');
-            const heroCta = document.getElementById('hero-cta');
 
             if (token) {
-                // User is logged in
-                let dashboardLink = role === 'ROLE_ADMIN' ? '/admin-dashboard' : '/user-dashboard';
-
+                const dashboardUrl = role === 'ROLE_ADMIN' ? '/admin-dashboard' : '/user-dashboard';
+                const dashboardLabel = role === 'ROLE_ADMIN' ? 'Admin Panel' : 'My Bookings';
                 navLinks.innerHTML = `
-                    <a href="${dashboardLink}" class="btn btn-secondary" style="margin-right: 1rem;">Dashboard</a>
-                    <button onclick="logout()">Logout</button>
+                    <a href="/bus-search"><i class="fa-solid fa-magnifying-glass"></i> Search Buses</a>
+                    <a href="${dashboardUrl}" class="btn btn-secondary btn-sm"><i class="fa-solid fa-ticket"></i> ${dashboardLabel}</a>
+                    <button onclick="logout()" class="btn btn-danger-outline btn-sm"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</button>
                 `;
-
-                heroCta.innerHTML = `
-                    <a href="${dashboardLink}" class="btn" style="background: white; color: var(--primary-color);">Go to Dashboard</a>
-                `;
-            } else {
-                // User is not logged in
-                navLinks.innerHTML = `
-                    <a href="/login" class="btn" style="margin-right: 1rem;">Login</a>
-                    <a href="/register" class="btn btn-secondary">Register</a>
-                `;
-
-                heroCta.innerHTML = `
-                    <a href="/login" class="btn" style="background: white; color: var(--primary-color);">Book Now</a>
-                    <a href="/register" class="btn btn-secondary">Sign Up</a>
-                `;
-            }
-        }
-
-        function logout() {
-            if (confirm("Are you sure you want to logout?")) {
-                localStorage.removeItem('token');
-                localStorage.removeItem('role');
-                window.location.reload();
             }
         }
     </script>

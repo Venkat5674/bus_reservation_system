@@ -1,0 +1,28 @@
+[Unit]
+Description=Bus Reservation System Spring Boot Service
+After=network.target postgresql.service
+Wants=postgresql.service
+
+[Service]
+Type=simple
+User=ubuntu
+Group=ubuntu
+WorkingDirectory=/opt/bus-reservation
+EnvironmentFile=/opt/bus-reservation/.env.production
+ExecStart=/usr/bin/java -Djava.security.egd=file:/dev/./urandom -XX:+UseG1GC -XX:MaxRAMPercentage=75.0 -jar /opt/bus-reservation/bus-reservation.jar
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=bus-reservation
+SuccessExitStatus=143
+TimeoutStopSec=30
+
+# Security Sandboxing in systemd
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+ProtectHome=read-only
+
+[Install]
+WantedBy=multi-user.target

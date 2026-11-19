@@ -1,227 +1,991 @@
+/* ==============================================================================
+   BUSBOOKER - Modern RedBus / AbhiBus Inspired Design System
+   ============================================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
 :root {
-    --primary-color: #4a90e2;
-    --secondary-color: #357abd;
-    --background-color: #f4f7f6;
-    --text-color: #333;
+    --primary: #d84e55;
+    --primary-hover: #b8383f;
+    --primary-light: #fef2f2;
+    --secondary: #1e293b;
+    --secondary-light: #f1f5f9;
+    --accent: #2563eb;
+    --success: #10b981;
+    --success-light: #ecfdf5;
+    --warning: #f59e0b;
+    --danger: #ef4444;
+    --danger-light: #fef2f2;
+    --bg-page: #f8fafc;
     --card-bg: #ffffff;
-    --error-color: #e74c3c;
-    --success-color: #2ecc71;
+    --text-main: #0f172a;
+    --text-muted: #64748b;
+    --border-color: #e2e8f0;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+    --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+    --shadow-lg: 0 12px 30px rgba(0,0,0,0.12);
+    --radius-sm: 6px;
+    --radius-md: 12px;
+    --radius-lg: 18px;
+    --radius-full: 9999px;
+    --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: var(--background-color);
-    color: var(--text-color);
-    margin: 0;
-    padding: 0;
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background-color: var(--bg-page);
+    color: var(--text-main);
     line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-}
-
-/* Navbar */
+/* ==============================================================================
+   Navbar
+   ============================================================================== */
 .navbar {
-    background-color: var(--card-bg);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    padding: 1rem 2rem;
+    background: #ffffff;
+    border-bottom: 1px solid var(--border-color);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+}
+
+.nav-container {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 0.9rem 1.5rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
 .navbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
     font-size: 1.5rem;
-    font-weight: bold;
-    color: var(--primary-color);
+    font-weight: 800;
+    color: var(--primary);
     text-decoration: none;
+    letter-spacing: -0.5px;
 }
 
-.nav-links button {
-    background: none;
-    border: 1px solid var(--primary-color);
-    color: var(--primary-color);
+.navbar-brand .logo-icon {
+    font-size: 1.7rem;
+    color: var(--primary);
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: var(--text-main);
+    font-weight: 600;
+    font-size: 0.95rem;
     padding: 0.5rem 1rem;
-    border-radius: 4px;
+    border-radius: var(--radius-sm);
+    transition: var(--transition);
+}
+
+.nav-links a:hover {
+    color: var(--primary);
+    background-color: var(--primary-light);
+}
+
+/* ==============================================================================
+   Buttons & Badges
+   ============================================================================== */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    font-family: inherit;
+    font-weight: 600;
+    font-size: 0.95rem;
+    padding: 0.7rem 1.4rem;
+    border-radius: var(--radius-md);
+    border: none;
     cursor: pointer;
-    transition: all 0.3s;
+    text-decoration: none;
+    transition: var(--transition);
 }
 
-.nav-links button:hover {
-    background-color: var(--primary-color);
-    color: white;
+.btn-primary {
+    background: linear-gradient(135deg, var(--primary), #ef4444);
+    color: white !important;
+    box-shadow: 0 4px 14px rgba(216, 78, 85, 0.35);
 }
 
-/* Cards & Forms */
+.btn-primary:hover {
+    background: linear-gradient(135deg, var(--primary-hover), #dc2626);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px rgba(216, 78, 85, 0.45);
+}
+
+.btn-secondary {
+    background-color: #ffffff;
+    color: var(--secondary) !important;
+    border: 1px solid var(--border-color);
+}
+
+.btn-secondary:hover {
+    background-color: var(--secondary-light);
+    border-color: #cbd5e1;
+}
+
+.btn-danger-outline {
+    background: transparent;
+    color: var(--danger) !important;
+    border: 1px solid var(--danger);
+}
+
+.btn-danger-outline:hover {
+    background: var(--danger);
+    color: white !important;
+}
+
+.btn-success {
+    background: var(--success);
+    color: white !important;
+}
+
+.btn-sm {
+    padding: 0.45rem 0.9rem;
+    font-size: 0.85rem;
+    border-radius: var(--radius-sm);
+}
+
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.25rem 0.65rem;
+    border-radius: var(--radius-full);
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.badge-success { background: var(--success-light); color: var(--success); }
+.badge-danger { background: var(--danger-light); color: var(--danger); }
+.badge-primary { background: var(--primary-light); color: var(--primary); }
+.badge-warning { background: #fef3c7; color: var(--warning); }
+.badge-info { background: #e0f2fe; color: #0284c7; }
+
+/* ==============================================================================
+   Layout & Containers
+   ============================================================================== */
+.container {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+    width: 100%;
+}
+
+/* ==============================================================================
+   Cards & Surface Panels
+   ============================================================================== */
 .card {
-    background: var(--card-bg);
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    background: #ffffff;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-sm);
     padding: 2rem;
-    margin-bottom: 2rem;
+    transition: var(--transition);
 }
 
+.card:hover {
+    box-shadow: var(--shadow-md);
+}
+
+/* ==============================================================================
+   Form Elements & Input Styling
+   ============================================================================== */
 .form-group {
-    margin-bottom: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    margin-bottom: 1.25rem;
+    width: 100%;
 }
 
 .form-group label {
     display: block;
-    margin-bottom: 0.5rem;
-    font-weight: 500;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--text-main);
+    letter-spacing: 0.2px;
 }
 
 .form-control {
     width: 100%;
-    padding: 0.75rem;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 1rem;
+    height: 48px;
+    padding: 0.75rem 1rem;
+    border: 1.5px solid var(--border-color);
+    border-radius: var(--radius-md);
+    font-size: 0.95rem;
+    font-family: inherit;
+    font-weight: 500;
+    color: var(--text-main);
+    background-color: #ffffff;
+    transition: var(--transition);
     box-sizing: border-box;
 }
 
-.btn {
-    display: inline-block;
-    background-color: var(--primary-color);
-    color: white;
-    padding: 0.75rem 1.5rem;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 1rem;
-    text-decoration: none;
-    transition: background 0.3s;
+.form-control:focus {
+    outline: none;
+    border-color: var(--primary);
+    background-color: #ffffff;
+    box-shadow: 0 0 0 3px rgba(216, 78, 85, 0.15);
 }
 
-.btn:hover {
-    background-color: var(--secondary-color);
+.form-control::placeholder {
+    color: #94a3b8;
+    font-weight: 400;
 }
 
-.btn-block {
-    display: block;
+/* Enhanced input with icon */
+.form-group .input-with-icon {
+    position: relative;
     width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.form-group .input-with-icon i {
+    position: absolute;
+    left: 1rem;
+    color: var(--primary);
+    font-size: 1rem;
+    pointer-events: none;
+    z-index: 2;
+}
+
+.form-group .input-with-icon input.form-control {
+    padding-left: 2.75rem;
+}
+
+/* ==============================================================================
+   Data Tables
+   ============================================================================== */
+.data-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    text-align: left;
+    font-size: 0.95rem;
+}
+
+.data-table th {
+    background: #f8fafc;
+    padding: 0.85rem 1.25rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    letter-spacing: 0.5px;
+    border-bottom: 2px solid var(--border-color);
+}
+
+.data-table td {
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid var(--border-color);
+    vertical-align: middle;
+}
+
+.data-table tbody tr {
+    transition: background-color 0.2s ease;
+}
+
+.data-table tbody tr:hover {
+    background-color: #f8fafc;
+}
+
+/* ==============================================================================
+   Hero Section (RedBus / AbhiBus Style)
+   ============================================================================== */
+.hero-wrapper {
+    background: linear-gradient(135deg, #a81c24 0%, #d84e55 50%, #f43f5e 100%);
+    color: white;
+    padding: 4.5rem 1.5rem 6.5rem;
+    position: relative;
+    overflow: hidden;
     text-align: center;
 }
 
-.btn-secondary {
-    background-color: #95a5a6;
+.hero-wrapper::after {
+    content: '';
+    position: absolute;
+    bottom: -40px;
+    left: 0;
+    right: 0;
+    height: 80px;
+    background: var(--bg-page);
+    border-radius: 50% 50% 0 0;
 }
 
-.btn-secondary:hover {
-    background-color: #7f8c8d;
+.hero-title {
+    font-size: 3rem;
+    font-weight: 800;
+    letter-spacing: -1px;
+    margin-bottom: 0.8rem;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-/* Grid Layouts */
-.grid {
+.hero-subtitle {
+    font-size: 1.25rem;
+    opacity: 0.92;
+    max-width: 650px;
+    margin: 0 auto 2.5rem;
+}
+
+/* ==============================================================================
+   Search Floating Widget
+   ============================================================================== */
+.search-widget-card {
+    background: #ffffff;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    padding: 1.8rem;
+    margin: -3.5rem auto 3rem;
+    max-width: 1100px;
+    position: relative;
+    z-index: 20;
+    border: 1px solid rgba(226, 232, 240, 0.8);
+}
+
+.search-form-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-template-columns: 1.2fr auto 1.2fr 1fr auto;
+    gap: 1rem;
+    align-items: center;
+}
+
+.input-icon-group {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.input-icon-group label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 0.35rem;
+    letter-spacing: 0.5px;
+}
+
+.input-with-icon {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-with-icon i {
+    position: absolute;
+    left: 1rem;
+    color: var(--primary);
+    font-size: 1.1rem;
+}
+
+.input-with-icon input,
+.input-with-icon select {
+    width: 100%;
+    padding: 0.85rem 1rem 0.85rem 2.8rem;
+    border: 1.5px solid var(--border-color);
+    border-radius: var(--radius-md);
+    font-size: 1rem;
+    font-family: inherit;
+    font-weight: 600;
+    color: var(--text-main);
+    background: #fafafa;
+    transition: var(--transition);
+}
+
+.input-with-icon input:focus,
+.input-with-icon select:focus {
+    outline: none;
+    border-color: var(--primary);
+    background: #ffffff;
+    box-shadow: 0 0 0 4px rgba(216, 78, 85, 0.12);
+}
+
+.swap-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--primary-light);
+    color: var(--primary);
+    border: 1px solid rgba(216, 78, 85, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    margin-top: 1.2rem;
+    transition: var(--transition);
+}
+
+.swap-btn:hover {
+    background: var(--primary);
+    color: white;
+    transform: rotate(180deg);
+}
+
+/* Popular Route Pills */
+.popular-routes {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-top: 1.2rem;
+    padding-top: 1rem;
+    border-top: 1px dashed var(--border-color);
+}
+
+.popular-routes span {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+}
+
+.route-pill {
+    background: var(--secondary-light);
+    color: var(--text-main);
+    padding: 0.35rem 0.75rem;
+    border-radius: var(--radius-full);
+    font-size: 0.82rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: var(--transition);
+    cursor: pointer;
+    border: 1px solid transparent;
+}
+
+.route-pill:hover {
+    background: var(--primary-light);
+    color: var(--primary);
+    border-color: var(--primary);
+}
+
+/* ==============================================================================
+   Bus Cards (AbhiBus / RedBus Style)
+   ============================================================================== */
+.bus-list-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.bus-card {
+    background: #ffffff;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition);
+    overflow: hidden;
+}
+
+.bus-card:hover {
+    box-shadow: var(--shadow-md);
+    border-color: #cbd5e1;
+    transform: translateY(-2px);
+}
+
+.bus-card-header {
+    padding: 1.25rem 1.75rem;
+    display: grid;
+    grid-template-columns: 2fr 3fr 1.5fr auto;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.bus-operator-info h3 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-main);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.bus-type-badge {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-top: 0.2rem;
+}
+
+.bus-rating {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    background: #15803d;
+    color: white;
+    padding: 0.15rem 0.5rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.75rem;
+    font-weight: 700;
+    margin-top: 0.4rem;
+}
+
+/* Journey Timeline */
+.journey-timeline {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.timeline-point {
+    text-align: center;
+}
+
+.point-time {
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: var(--text-main);
+}
+
+.point-city {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-muted);
+}
+
+.timeline-duration {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+}
+
+.duration-line {
+    width: 100%;
+    height: 2px;
+    background: #cbd5e1;
+    position: relative;
+    margin: 0.4rem 0;
+}
+
+.duration-line::before, .duration-line::after {
+    content: '';
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--primary);
+    top: -2px;
+}
+.duration-line::before { left: 0; }
+.duration-line::after { right: 0; }
+
+.duration-text {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--text-muted);
+}
+
+/* Price & CTA */
+.bus-pricing {
+    text-align: right;
+}
+
+.price-val {
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: var(--primary);
+}
+
+.seats-avail {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #16a34a;
+}
+
+.bus-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+/* Amenities bar in card */
+.bus-card-footer {
+    background: #f8fafc;
+    border-top: 1px solid var(--border-color);
+    padding: 0.7rem 1.75rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.85rem;
+}
+
+.amenities-list {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    color: var(--text-muted);
+}
+
+.amenity-item {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.amenity-item i {
+    color: var(--primary);
+}
+
+/* ==============================================================================
+   Seat Selection Coach Layout (Interactive AbhiBus Style)
+   ============================================================================== */
+.seat-modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(15, 23, 42, 0.65);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    opacity: 0;
+    pointer-events: none;
+    transition: var(--transition);
+}
+
+.seat-modal-backdrop.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.seat-modal {
+    background: #ffffff;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    width: 95%;
+    max-width: 980px;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.seat-modal-header {
+    padding: 1.25rem 1.8rem;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.seat-modal-body {
+    padding: 1.8rem;
+    display: grid;
+    grid-template-columns: 1.8fr 1.2fr;
     gap: 2rem;
 }
 
-/* Auth Pages */
-.auth-container {
-    max-width: 400px;
-    margin: 4rem auto;
+/* Bus Coach Visual */
+.bus-coach-container {
+    background: #f8fafc;
+    border: 2px solid #cbd5e1;
+    border-radius: 20px 20px 10px 10px;
+    padding: 1.5rem;
+    position: relative;
 }
 
-.auth-header {
-    text-align: center;
-    margin-bottom: 2rem;
+.driver-area {
+    display: flex;
+    justify-content: flex-end;
+    padding-bottom: 1.2rem;
+    border-bottom: 2px dashed #cbd5e1;
+    margin-bottom: 1.2rem;
 }
 
-.alert {
-    padding: 1rem;
+.steering-wheel {
+    font-size: 1.5rem;
+    color: var(--text-muted);
+}
+
+.seat-grid-2x2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 40px 1fr 1fr;
+    gap: 0.8rem;
+    align-items: center;
+}
+
+.seat-item {
+    aspect-ratio: 1;
+    border: 1.5px solid #94a3b8;
+    background: white;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: var(--transition);
+    position: relative;
+}
+
+.seat-item i {
+    font-size: 1.1rem;
+    margin-bottom: 2px;
+}
+
+.seat-item:hover:not(.booked) {
+    border-color: var(--primary);
+    color: var(--primary);
+    transform: scale(1.08);
+}
+
+.seat-item.selected {
+    background: var(--success);
+    border-color: var(--success);
+    color: white;
+    box-shadow: 0 4px 10px rgba(16, 185, 129, 0.4);
+}
+
+.seat-item.booked {
+    background: #e2e8f0;
+    border-color: #cbd5e1;
+    color: #94a3b8;
+    cursor: not-allowed;
+}
+
+.seat-aisle {
+    grid-column: 3;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.65rem;
+    color: #cbd5e1;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Legend */
+.seat-legend {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-top: 1.2rem;
+    padding-top: 1rem;
+    border-top: 1px solid #e2e8f0;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.legend-box {
+    width: 18px;
+    height: 18px;
     border-radius: 4px;
-    margin-bottom: 1rem;
-    display: none;
+    border: 1px solid #94a3b8;
 }
 
-.alert-error {
-    background-color: #fadbd8;
-    color: #721c24;
-    border: 1px solid #f5c6cb;
+.legend-box.avail { background: white; }
+.legend-box.sel { background: var(--success); border-color: var(--success); }
+.legend-box.bkd { background: #e2e8f0; border-color: #cbd5e1; }
+
+/* Booking Summary Side Panel */
+.seat-summary-card {
+    background: #f8fafc;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-color);
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
-/* Toast Notification */
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+    font-size: 0.9rem;
+}
+
+.summary-row.total {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--text-main);
+    border-top: 1.5px dashed var(--border-color);
+    padding-top: 0.75rem;
+    margin-top: 0.75rem;
+}
+
+/* ==============================================================================
+   Interactive Leaflet Map Modal
+   ============================================================================== */
+#map-modal .seat-modal {
+    max-width: 800px;
+}
+
+#route-map-container {
+    width: 100%;
+    height: 420px;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+}
+
+/* ==============================================================================
+   Ticket Boarding Pass (User Dashboard)
+   ============================================================================== */
+.ticket-card {
+    background: #ffffff;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--border-color);
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    margin-bottom: 1.5rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.ticket-card::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: 25%;
+    width: 24px;
+    height: 24px;
+    background: var(--bg-page);
+    border-radius: 50%;
+    transform: translateY(-50%);
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.ticket-main {
+    padding: 1.75rem;
+    border-right: 2px dashed #e2e8f0;
+}
+
+.ticket-stub {
+    padding: 1.75rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: #fafafa;
+}
+
+/* ==============================================================================
+   Auth Forms (Login / Register Split Screen)
+   ============================================================================== */
+.auth-wrapper {
+    min-height: calc(100vh - 75px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1.5rem;
+}
+
+.auth-card {
+    background: #ffffff;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--border-color);
+    width: 100%;
+    max-width: 480px;
+    padding: 2.5rem;
+}
+
+.auth-card h2 {
+    font-size: 1.75rem;
+    font-weight: 800;
+    margin-bottom: 0.5rem;
+    color: var(--text-main);
+}
+
+.auth-card p {
+    color: var(--text-muted);
+    margin-bottom: 2rem;
+    font-size: 0.95rem;
+}
+
+/* Toast Notifications */
 .toast {
     visibility: hidden;
-    min-width: 250px;
-    margin-left: -125px;
-    background-color: #333;
+    min-width: 280px;
+    background-color: #1e293b;
     color: #fff;
     text-align: center;
-    border-radius: 2px;
-    padding: 16px;
+    border-radius: var(--radius-md);
+    padding: 1rem 1.5rem;
     position: fixed;
-    z-index: 1;
-    left: 50%;
+    z-index: 3000;
     bottom: 30px;
-    font-size: 17px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    right: 30px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    box-shadow: var(--shadow-lg);
+    transform: translateY(20px);
+    opacity: 0;
+    transition: var(--transition);
 }
 
 .toast.show {
     visibility: visible;
-    -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
-    animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    transform: translateY(0);
+    opacity: 1;
 }
 
-.toast.success {
-    background-color: #2ecc71;
-}
+.toast.success { background: #15803d; }
+.toast.error { background: #b91c1c; }
 
-.toast.error {
-    background-color: #e74c3c;
-}
-
-@-webkit-keyframes fadein {
-    from {
-        bottom: 0;
-        opacity: 0;
+/* Responsive Queries */
+@media (max-width: 992px) {
+    .search-form-grid {
+        grid-template-columns: 1fr;
     }
-
-    to {
-        bottom: 30px;
-        opacity: 1;
+    .swap-btn {
+        margin: 0.5rem auto;
     }
-}
-
-@keyframes fadein {
-    from {
-        bottom: 0;
-        opacity: 0;
+    .bus-card-header {
+        grid-template-columns: 1fr;
+        text-align: left;
     }
-
-    to {
-        bottom: 30px;
-        opacity: 1;
+    .bus-pricing {
+        text-align: left;
     }
-}
-
-@-webkit-keyframes fadeout {
-    from {
-        bottom: 30px;
-        opacity: 1;
+    .seat-modal-body {
+        grid-template-columns: 1fr;
     }
-
-    to {
-        bottom: 0;
-        opacity: 0;
+    .ticket-card {
+        grid-template-columns: 1fr;
     }
-}
-
-@keyframes fadeout {
-    from {
-        bottom: 30px;
-        opacity: 1;
-    }
-
-    to {
-        bottom: 0;
-        opacity: 0;
+    .ticket-main {
+        border-right: none;
+        border-bottom: 2px dashed #e2e8f0;
     }
 }

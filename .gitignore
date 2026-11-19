@@ -5,6 +5,18 @@ data/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
+### Environment Secrets ###
+.env
+.env.local
+.env.production
+*.env
+!*.env.example
+*.pem
+*.key
+*.cert
+*.crt
+*.log
+
 ### STS ###
 .apt_generated
 .classpath

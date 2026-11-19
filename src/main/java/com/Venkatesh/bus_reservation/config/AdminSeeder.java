@@ -3,6 +3,8 @@ package com.Venkatesh.bus_reservation.config;
 import com.Venkatesh.bus_reservation.entity.User;
 import com.Venkatesh.bus_reservation.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,25 +12,27 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;
 
+@Slf4j
 @Configuration
 @RequiredArgsConstructor
 public class AdminSeeder {
 
+    @Value("${app.admin.email:vpamudurti@gmail.com}")
+    private String adminEmail;
+
+    @Value("${app.admin.password:Venkatesh@123}")
+    private String adminPassword;
+
+    @Value("${app.admin.name:Admin Venkatesh}")
+    private String adminName;
+
     @Bean
     public CommandLineRunner seedAdmin(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         return args -> {
-            String adminEmail = "vpamudurti@gmail.com";
-            String adminPassword = "Venkatesh@123";
-            String adminName = "Admin Venkatesh";
-
             Optional<User> existingUser = userRepository.findByEmail(adminEmail);
 
             if (existingUser.isPresent()) {
-                User user = existingUser.get();
-                user.setPassword(passwordEncoder.encode(adminPassword));
-                user.setRole("ROLE_ADMIN");
-                userRepository.save(user);
-                System.out.println("Admin user updated: " + adminEmail);
+                log.info("Admin user already present: {}", adminEmail);
             } else {
                 User admin = User.builder()
                         .name(adminName)
@@ -37,7 +41,7 @@ public class AdminSeeder {
                         .role("ROLE_ADMIN")
                         .build();
                 userRepository.save(admin);
-                System.out.println("Admin user created: " + adminEmail);
+                log.info("Admin user initialized successfully: {}", adminEmail);
             }
         };
     }

@@ -70,6 +70,30 @@ public class BookingController {
                 .build());
     }
 
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<ApiResponse<List<BookingResponseDTO>>> getUserBookings(@PathVariable Long userId) {
+        List<BookingResponseDTO> bookings = bookingService.getUserBookings(userId).stream()
+                .map(this::mapToDTO)
+                .toList();
+
+        return ResponseEntity.ok(ApiResponse.<List<BookingResponseDTO>>builder()
+                .success(true)
+                .data(bookings)
+                .timestamp(LocalDateTime.now())
+                .build());
+    }
+
+    @GetMapping("/bus/{busId}/booked-seats")
+    public ResponseEntity<ApiResponse<List<Integer>>> getBookedSeatsForBus(@PathVariable Long busId) {
+        List<Integer> bookedSeats = bookingService.getBookedSeatsForBus(busId);
+
+        return ResponseEntity.ok(ApiResponse.<List<Integer>>builder()
+                .success(true)
+                .data(bookedSeats)
+                .timestamp(LocalDateTime.now())
+                .build());
+    }
+
     private BookingResponseDTO mapToDTO(Booking booking) {
 
         User user = booking.getUser();
