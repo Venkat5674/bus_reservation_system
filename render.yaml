@@ -34,9 +34,9 @@ services:
       - key: JWT_SECRET
         generateValue: true
       - key: ADMIN_EMAIL
-        value: admin@busbooker.com
+        value: vpamudurti@gmail.com
       - key: ADMIN_PASSWORD
-        value: AdminSecret@123
+        value: Venkatesh@123
 
 databases:
   - name: bus-reservation-db

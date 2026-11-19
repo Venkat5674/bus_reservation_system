@@ -31,7 +31,7 @@ function handleRegister(event) {
 
 function handleLogin(event, roleCheck) {
     event.preventDefault();
-    const email = document.getElementById('email').value;
+    const email = document.getElementById('email').value.trim();
     const password = document.getElementById('password').value;
 
     fetch(`${API_BASE_URL}/login`, {

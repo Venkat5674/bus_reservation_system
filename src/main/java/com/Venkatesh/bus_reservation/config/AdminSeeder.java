@@ -29,20 +29,34 @@ public class AdminSeeder {
     @Bean
     public CommandLineRunner seedAdmin(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         return args -> {
-            Optional<User> existingUser = userRepository.findByEmail(adminEmail);
-
-            if (existingUser.isPresent()) {
-                log.info("Admin user already present: {}", adminEmail);
-            } else {
-                User admin = User.builder()
-                        .name(adminName)
-                        .email(adminEmail)
-                        .password(passwordEncoder.encode(adminPassword))
-                        .role("ROLE_ADMIN")
-                        .build();
-                userRepository.save(admin);
-                log.info("Admin user initialized successfully: {}", adminEmail);
+            seedOrUpdateUser(userRepository, passwordEncoder, adminEmail, adminPassword, adminName);
+            if (!adminEmail.equalsIgnoreCase("vpamudurti@gmail.com")) {
+                seedOrUpdateUser(userRepository, passwordEncoder, "vpamudurti@gmail.com", "Venkatesh@123", "Admin Venkatesh");
             }
         };
+    }
+
+    private void seedOrUpdateUser(UserRepository userRepository, PasswordEncoder passwordEncoder,
+                                  String email, String password, String name) {
+        if (email == null || email.isBlank()) return;
+        String cleanEmail = email.trim().toLowerCase();
+        Optional<User> existingUser = userRepository.findByEmail(cleanEmail);
+
+        if (existingUser.isPresent()) {
+            User user = existingUser.get();
+            user.setPassword(passwordEncoder.encode(password));
+            user.setRole("ROLE_ADMIN");
+            userRepository.save(user);
+            log.info("Admin user credentials updated and verified: {}", cleanEmail);
+        } else {
+            User admin = User.builder()
+                    .name(name)
+                    .email(cleanEmail)
+                    .password(passwordEncoder.encode(password))
+                    .role("ROLE_ADMIN")
+                    .build();
+            userRepository.save(admin);
+            log.info("Admin user created successfully: {}", cleanEmail);
+        }
     }
 }

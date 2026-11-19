@@ -25,13 +25,14 @@ public class AuthService {
     private final CustomUserDetailsService userDetailsService;
 
     public AuthResponse register(RegisterRequest request) {
-        if (userRepository.existsByEmail(request.getEmail())) {
+        String cleanEmail = request.getEmail() != null ? request.getEmail().trim().toLowerCase() : "";
+        if (userRepository.existsByEmail(cleanEmail)) {
             throw new BadRequestException("Email already exists");
         }
 
         User user = User.builder()
-                .name(request.getName())
-                .email(request.getEmail())
+                .name(request.getName() != null ? request.getName().trim() : "")
+                .email(cleanEmail)
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role("ROLE_USER") // Default role
                 .build();
@@ -48,12 +49,13 @@ public class AuthService {
     }
 
     public AuthResponse login(LoginRequest request) {
+        String cleanEmail = request.getEmail() != null ? request.getEmail().trim().toLowerCase() : "";
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        request.getEmail(),
+                        cleanEmail,
                         request.getPassword()));
 
-        User user = userRepository.findByEmail(request.getEmail())
+        User user = userRepository.findByEmail(cleanEmail)
                 .orElseThrow(() -> new BadRequestException("User not found"));
 
         var userDetails = userDetailsService.loadUserByUsername(user.getEmail());
